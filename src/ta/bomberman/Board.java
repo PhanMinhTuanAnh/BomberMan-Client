@@ -131,6 +131,12 @@ public class Board implements IRender {
 		_game.pause();
 	}
 	
+	public void winGame() {
+		_screenToShow = 4;
+		_game.resetScreenDelay();
+		_game.pause();
+	}
+	
 	public boolean detectNoEnemies() {
 		int total = 0;
 		for (int i = 0; i < _characters.size(); i++) {
@@ -146,11 +152,14 @@ public class Board implements IRender {
 			case 1:
 				_screen.drawEndGame(g, _points);
 				break;
-			case 2:
-				_screen.drawChangeLevel(g, _levelLoader.getLevel());
+			case 4:
+				_screen.drawWinGame(g, _levelLoader.getLevel(), _points);
 				break;
 			case 3:
 				_screen.drawPaused(g);
+				break;
+			case 2:
+				_screen.drawChangeLevel(g, _levelLoader.getLevel());
 				break;
 		}
 	}
