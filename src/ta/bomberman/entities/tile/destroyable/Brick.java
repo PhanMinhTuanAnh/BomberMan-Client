@@ -1,6 +1,9 @@
 package ta.bomberman.entities.tile.destroyable;
 
 
+
+import ta.bomberman.entities.Entity;
+import ta.bomberman.entities.bomb.Flame;
 import ta.bomberman.graphics.Screen;
 import ta.bomberman.graphics.Sprite;
 import ta.bomberman.level.Coordinates;
@@ -30,4 +33,12 @@ public class Brick extends DestroyableTile {
 			screen.renderEntity( x, y, this);
 	}
 	
+	@Override
+	public boolean collide(Entity e) {
+		
+		if(e instanceof Flame)
+			destroy();
+			
+		return false;
+	}
 }

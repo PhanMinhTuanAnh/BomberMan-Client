@@ -1,6 +1,10 @@
+/*
+    Xử lý va chạm brick với flame. - 10/11
+*/
 package ta.bomberman.entities.tile.destroyable;
 
 import ta.bomberman.entities.Entity;
+import ta.bomberman.entities.bomb.Flame;
 import ta.bomberman.entities.tile.Tile;
 import ta.bomberman.graphics.Sprite;
 
@@ -32,11 +36,16 @@ public class DestroyableTile extends Tile {
 
 	public void destroy() {
 		_destroyed = true;
+		System.out.println("destroy");
 	}
 	
 	@Override
 	public boolean collide(Entity e) {
+		System.out.println("destroy");
 		// TODO: xử lý khi va chạm với Flame
+		if (e instanceof Flame) {
+		    destroy();
+		}
 		return false;
 	}
 	

@@ -16,7 +16,6 @@ public class InfoPanel extends JPanel {
 	public InfoPanel(Game game) {
 		setLayout(new GridLayout());
 		
-		
 		timeLabel = new JLabel("Time: " + game.getBoard().getTime());
 		timeLabel.setForeground(Color.white);
 		timeLabel.setHorizontalAlignment(JLabel.CENTER);

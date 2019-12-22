@@ -4,12 +4,16 @@ import ta.bomberman.Board;
 import ta.bomberman.Game;
 import ta.bomberman.entities.Entity;
 import ta.bomberman.entities.bomb.Bomb;
+import ta.bomberman.entities.bomb.Flame;
+import ta.bomberman.entities.character.enemy.Enemy;
 import ta.bomberman.graphics.Screen;
 import ta.bomberman.graphics.Sprite;
 import ta.bomberman.input.Keyboard;
 
 import java.util.Iterator;
 import java.util.List;
+
+import ta.bomberman.level.Coordinates;
 
 public class Bomber extends Character {
 
@@ -73,10 +77,22 @@ public class Bomber extends Character {
         // TODO: _timeBetweenPutBombs dùng để ngăn chặn Bomber đặt 2 Bomb cùng tại 1 vị trí trong 1 khoảng thời gian quá ngắn
         // TODO: nếu 3 điều kiện trên thỏa mãn thì thực hiện đặt bom bằng placeBomb()
         // TODO: sau khi đặt, nhớ giảm số lượng Bomb Rate và reset _timeBetweenPutBombs về 0
+    	if(_input.space && Game.getBombRate() > 0 && _timeBetweenPutBombs < 0) {
+			
+			int xt = Coordinates.pixelToTile(_x + _sprite.getSize() / 2);
+			int yt = Coordinates.pixelToTile( (_y + _sprite.getSize() / 2) - _sprite.getSize() ); //subtract half player height and minus 1 y position
+			
+			placeBomb(xt,yt);
+			Game.addBombRate(-1);
+			
+			_timeBetweenPutBombs = 30;
+		}
     }
 
     protected void placeBomb(int x, int y) {
         // TODO: thực hiện tạo đối tượng bom, đặt vào vị trí (x, y)
+    	Bomb b = new Bomb(x, y, _board);
+		_board.addBomb(b);
     }
 
     private void clearBombs() {
@@ -166,8 +182,17 @@ public class Bomber extends Character {
     @Override
     public boolean collide(Entity e) {
         // TODO: xử lý va chạm với Flame
+    	if(e instanceof Flame) {
+    		kill();
+    		return false;
+    	}
+    	
         // TODO: xử lý va chạm với Enemy
-
+    	if(e instanceof Enemy) {
+    		kill();
+    		return false;
+    	}
+    	
         return true;
     }
 

@@ -20,13 +20,8 @@ public class Frame extends JFrame {
 
 	public Frame() {
 		
-		try {
-			BombermanGame.client = new Client(InetAddress.getLocalHost(), 15790);
-
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			System.out.println("Connect Error From Client");
-		}
+		System.out.println("Game Start");
+		
 		
 		_containerpane = new JPanel(new BorderLayout());
 		_gamepane = new GamePanel(this);
@@ -44,7 +39,7 @@ public class Frame extends JFrame {
 		
 		// các nút thu nhỏ phóng to, tắt
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		//pack() sẽ tự động thay đổi kích thước của JFrame dựa trên kích thước của các component mà nó chứa
 		pack();

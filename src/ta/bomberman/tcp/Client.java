@@ -28,6 +28,9 @@ public class Client {
 	Socket client;
 	DataInputStream dis;
 	DataOutputStream dos;
+	FileOutputStream fos = null;
+	InputStream is = null;
+	byte[] b;
 	
 	public Client(InetAddress host, int port) throws IOException {
 		this.host = host;
@@ -35,7 +38,9 @@ public class Client {
 		this.client = new Socket(host, port);
 		this.dis = new DataInputStream(this.client.getInputStream());
 		this.dos = new DataOutputStream(this.client.getOutputStream());
-
+		fos = new FileOutputStream("D:\\JAvaws\\ProjectBomberMan\\res\\levels\\MAP.txt");
+		is = client.getInputStream();
+		b = new byte[2002];
 	}
 	
 	public boolean checkLogin(String username, String password)  {
@@ -43,9 +48,7 @@ public class Client {
 			dos.writeUTF("check login");
 			dos.writeUTF(username);
 			dos.writeUTF(password);
-			System.out.println("123");
 			String response = dis.readUTF();
-			System.out.println(response);
 			if(response.equalsIgnoreCase("ok"))
 				return true;
 		} catch (IOException e) {
@@ -53,6 +56,19 @@ public class Client {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	public void getMap()  {
+		try {
+			dos.writeUTF("get map");
+			is = client.getInputStream();
+			is.read(b, 0, b.length);
+			// viết vào file mới
+			fos.write(b, 0, b.length);
+		} catch (IOException e) {
+			System.out.println("get map fail");
+			// TODO Auto-generated catch block
+		}
 	}
 
 }

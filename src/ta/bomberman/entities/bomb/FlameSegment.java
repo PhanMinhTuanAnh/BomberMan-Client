@@ -3,6 +3,7 @@ package ta.bomberman.entities.bomb;
 import ta.bomberman.entities.Entity;
 import ta.bomberman.graphics.Screen;
 import ta.bomberman.graphics.Sprite;
+import ta.bomberman.entities.character.Character;
 
 
 public class FlameSegment extends Entity {
@@ -68,6 +69,9 @@ public class FlameSegment extends Entity {
 	@Override
 	public boolean collide(Entity e) {
 		// TODO: xử lý khi FlameSegment va chạm với Character
+		if (e instanceof Character) {
+			((Character) e).kill();
+		}
 		return true;
 	}
 	

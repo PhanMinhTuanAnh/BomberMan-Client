@@ -1,10 +1,15 @@
 package ta.bomberman.entities.bomb;
 
+import ta.bomberman.level.Coordinates;
+import ta.bomberman.Game;
+import ta.bomberman.entities.character.Character;
 import ta.bomberman.Board;
 import ta.bomberman.entities.AnimatedEntitiy;
 import ta.bomberman.entities.Entity;
 import ta.bomberman.graphics.Screen;
 import ta.bomberman.graphics.Sprite;
+import ta.bomberman.entities.bomb.Flame;
+import ta.bomberman.entities.character.Bomber;
 
 public class Bomb extends AnimatedEntitiy {
 
@@ -73,10 +78,18 @@ public class Bomb extends AnimatedEntitiy {
      */
 	protected void explode() {
 		_exploded = true;
-		
+		_allowedToPassThru = true;
 		// TODO: xử lý khi Character đứng tại vị trí Bomb
-		
+		Character character = _board.getCharacterAtExcluding((int)_x, (int)_y, null);
+		if (character != null) {
+			character.kill();
+		}
 		// TODO: tạo các Flame
+		_flames = new Flame[4];
+
+		for (int i = 0; i < _flames.length; i++) {
+			_flames[i] = new Flame((int) _x, (int) _y, i, Game.getBombRadius(), _board);
+		}
 	}
 	
 	public FlameSegment flameAt(int x, int y) {
@@ -94,7 +107,26 @@ public class Bomb extends AnimatedEntitiy {
 	@Override
 	public boolean collide(Entity e) {
         // TODO: xử lý khi Bomber đi ra sau khi vừa đặt bom (_allowedToPassThru)
-        // TODO: xử lý va chạm với Flame của Bomb khác
+		if(e instanceof Bomber) {
+			double diffX = e.getX() - Coordinates.tileToPixel(getX());
+			double diffY = e.getY() - Coordinates.tileToPixel(getY());
+			
+			if(!(diffX >= -10 && diffX < 16 && diffY >= 1 && diffY <= 28)) { 
+				// xem thằng user đã đi ra khỏi bom chưa
+				
+				_allowedToPassThru = false;
+			}
+			
+			return _allowedToPassThru;
+		}
+		
+		
+		// TODO: xử lý va chạm với Flame của Bomb khác
+		if (e instanceof Flame) {
+			// thời gian nổ
+			_timeToExplode = 0;
+			return true;
+		}
         return false;
 	}
 }

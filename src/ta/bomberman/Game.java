@@ -70,15 +70,15 @@ public class Game extends Canvas {
 		_input2 = new Keyboard();
 		
 		//while the other player connect
-		//test
-		Scanner sc = new Scanner(System.in);
-		String name = "",password = "";
-		do{
-			name = sc.next();
-			password = sc.next();
-			System.out.println(name + " " + password);
-		}
-		while(!BombermanGame.client.checkLogin(name, password));
+		//test login
+//		Scanner sc = new Scanner(System.in);
+//		String name = "",password = "";
+//		do{
+//			name = sc.next();
+//			password = sc.next();
+//			System.out.println(name + " " + password);
+//		}
+//		while(!BombermanGame.client.checkLogin(name, password));
 		
 		System.out.println("howw");
 		
@@ -177,6 +177,7 @@ public class Game extends Canvas {
 				
 				if(_board.getShow() == 2)
 					--_screenDelay;
+				
 			}
 		}
 	}

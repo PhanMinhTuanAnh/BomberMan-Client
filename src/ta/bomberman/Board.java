@@ -85,13 +85,7 @@ public class Board implements IRender {
 	@Override
 	public void render(Screen screen) {
 		if( _game.isPaused() ) return;
-		
-		//only render the visible part of screen
-		int x0 = Screen.xOffset >> 4; //tile precision, -> left X
-		int x1 = (Screen.xOffset + screen.getWidth() + Game.TILES_SIZE) / Game.TILES_SIZE; // -> right X
-		int y0 = Screen.yOffset >> 4;
-		int y1 = (Screen.yOffset + screen.getHeight()) / Game.TILES_SIZE; //render one tile plus to fix black margins
-		
+
 		for (int y = 0; y < _levelLoader.getHeight(); y++) {
 			for (int x = 0; x < _levelLoader.getWidth(); x++) {
 				_entities[x + y * _levelLoader.getWidth()].render(screen);

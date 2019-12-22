@@ -3,6 +3,8 @@ package ta.bomberman.entities.bomb;
 import ta.bomberman.Board;
 import ta.bomberman.entities.Entity;
 import ta.bomberman.graphics.Screen;
+import ta.bomberman.entities.bomb.FlameSegment;
+import ta.bomberman.entities.character.Character;
 
 public class Flame extends Entity {
 
@@ -10,7 +12,7 @@ public class Flame extends Entity {
 	protected int _direction;
 	private int _radius;
 	protected int xOrigin, yOrigin;
-	protected FlameSegment[] _flameSegments = new FlameSegment[0];
+	protected FlameSegment[] _flameSegments;
 
 	/**
 	 *
@@ -42,9 +44,23 @@ public class Flame extends Entity {
 		/**
 		 * biến last dùng để đánh dấu cho segment cuối cùng
 		 */
-		boolean last;
+		boolean last = false;
 
 		// TODO: tạo các segment dưới đây
+
+        int x = (int)_x;
+        int y = (int)_y;
+        for (int i = 0; i < _flameSegments.length; i++) {
+            last = (i == _flameSegments.length - 1 ? true : false);
+
+            switch (_direction) {
+                case 0: y--; break;
+                case 1: x++; break;
+                case 2: y++; break;
+                case 3: x--; break;
+            }
+            _flameSegments[i] = new FlameSegment(x, y, _direction, last);
+        }
 	}
 
 	/**
@@ -53,7 +69,27 @@ public class Flame extends Entity {
 	 */
 	private int calculatePermitedDistance() {
 		// TODO: thực hiện tính toán độ dài của Flame
-		return 1;
+		int radius = 0;
+		int x = (int)_x;
+		int y = (int)_y;
+
+		while(radius < _radius) {
+			if(_direction == 0) y--;
+			if(_direction == 1) x++;
+			if(_direction == 2) y++;
+			if(_direction == 3) x--;
+
+			Entity a = _board.getEntity(x, y, null);
+
+			//flame đối với character
+			if(a instanceof Character) ++radius;
+
+			if(!a.collide(this))
+				break;
+
+			++radius;
+		}
+		return radius;
 	}
 	
 	public FlameSegment flameSegmentAt(int x, int y) {
@@ -77,6 +113,9 @@ public class Flame extends Entity {
 	@Override
 	public boolean collide(Entity e) {
 		// TODO: xử lý va chạm với Bomber, Enemy. Chú ý đối tượng này có vị trí chính là vị trí của Bomb đã nổ
+		if(e instanceof Character){
+            ((Character) e).kill();
+        }
 		return true;
 	}
 }

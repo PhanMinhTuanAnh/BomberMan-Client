@@ -1,6 +1,7 @@
 package ta.bomberman.level;
 
 import ta.bomberman.Board;
+import ta.bomberman.BombermanGame;
 import ta.bomberman.Game;
 import ta.bomberman.entities.LayeredEntity;
 import ta.bomberman.entities.character.Bomber;
@@ -43,7 +44,9 @@ public class FileLevelLoader extends LevelLoader {
 		
 		BufferedReader br = null;
 		try {
-			br = new BufferedReader(new FileReader("D:\\JAvaws\\ProjectBomberMan\\res\\levels\\Level3.txt"));
+
+			br = new BufferedReader(new FileReader("D:\\JAvaws\\ProjectBomberMan\\res\\levels\\MAP.txt"));
+
 			String str[] = br.readLine().split(" ");
 			_level = Integer.parseInt(str[0]); 
 			_height = Integer.parseInt(str[1]);
