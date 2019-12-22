@@ -19,7 +19,9 @@ public abstract class LevelLoader {
 
 	public abstract void loadLevel(int level) throws LoadLevelException;
 
-	public abstract void createEntities();
+//	public abstract void createEntities();
+	
+	public abstract void createEntities(int xStartBomberman, int yStartBomberman, int xStartOpponent, int yStartOpponent);
 
 	public int getWidth() {
 		return _width;

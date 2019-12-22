@@ -3,6 +3,8 @@ package ta.bomberman.input;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import ta.bomberman.Game;
+
 /**
  * Tiếp nhận và xử lý các sự kiện nhập từ bàn phím
  */
@@ -17,6 +19,39 @@ public class Keyboard implements KeyListener {
 		left = keys[KeyEvent.VK_LEFT] || keys[KeyEvent.VK_A];
 		right = keys[KeyEvent.VK_RIGHT] || keys[KeyEvent.VK_D];
 		space = keys[KeyEvent.VK_SPACE] || keys[KeyEvent.VK_X];
+	}
+	
+	public void update(String str) {
+		if(str.equalsIgnoreCase("up")) {
+			up = true;
+			down = false;
+			left = false;
+			right = false;
+		}
+		else if(str.equalsIgnoreCase("down")) {
+			up = false;
+			down = true;
+			left = false;
+			right = false;
+		}
+		else if(str.equalsIgnoreCase("left")) {
+			up = false;
+			down = false;
+			left = true;
+			right = false;
+		}
+		else if(str.equalsIgnoreCase("right")){
+			up = false;
+			down = false;
+			left = false;
+			right = true;
+		}
+		else {
+			up = false;
+			down = false;
+			left = false;
+			right = false;
+		}
 	}
 
 	@Override

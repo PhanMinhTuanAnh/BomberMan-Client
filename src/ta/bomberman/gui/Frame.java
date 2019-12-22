@@ -1,9 +1,12 @@
 package ta.bomberman.gui;
 
+import ta.bomberman.BombermanGame;
 import ta.bomberman.Game;
+import ta.bomberman.tcp.Client;
 
 import javax.swing.*;
 import java.awt.*;
+import java.net.InetAddress;
 
 /**
  * Swing Frame chứa toàn bộ các component
@@ -16,6 +19,14 @@ public class Frame extends JFrame {
 	private Game _game;
 
 	public Frame() {
+		
+		try {
+			BombermanGame.client = new Client(InetAddress.getLocalHost(), 15790);
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			System.out.println("Connect Error From Client");
+		}
 		
 		_containerpane = new JPanel(new BorderLayout());
 		_gamepane = new GamePanel(this);

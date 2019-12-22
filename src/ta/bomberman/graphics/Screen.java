@@ -65,8 +65,11 @@ public class Screen {
 	}
 	
 	public static void setOffset(int xO, int yO) {
-		xOffset = xO;
-		yOffset = yO;
+//		xOffset = xO;
+//		yOffset = yO;
+		xOffset = 0;
+		yOffset = 0;
+	
 	}
 	
 	public static int calculateXOffset(Board board, Bomber bomber) {

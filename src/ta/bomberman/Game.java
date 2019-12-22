@@ -3,24 +3,32 @@ package ta.bomberman;
 import ta.bomberman.graphics.Screen;
 import ta.bomberman.gui.Frame;
 import ta.bomberman.input.Keyboard;
+import ta.bomberman.tcp.Client;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Scanner;
 
 /**
  * Tạo vòng lặp cho game, lưu trữ một vài tham số cấu hình toàn cục,
- * G�?i phương thức render(), update() cho tất cả các entity
+ * G�?i phương thức render(), update() cho tất cả các entity
  */
 public class Game extends Canvas {
 
+	public static int howManyUser = 0;
+	public static int xStartBomberman = 1, yStartBomberman = 1, xStartOpponent = -1, yStartOpponent = -1; 
+	public static String input2 = "";
+	
 	public static final int TILES_SIZE = 16,
-							WIDTH = TILES_SIZE * (31 / 2),
+							WIDTH = TILES_SIZE * (63 / 2),
 							HEIGHT = 13 * TILES_SIZE;
 
 	// tỉ lệ khung hình
-	public static int SCALE = 3;
+	public static int SCALE = 2;
 	
 	public static final String TITLE = "BombermanGame";
 	
@@ -41,7 +49,8 @@ public class Game extends Canvas {
 	
 	protected int _screenDelay = SCREENDELAY;
 	
-	private Keyboard _input;
+	public static Keyboard _input;
+	public static Keyboard _input2;
 	private boolean _running = false;
 	private boolean _paused = true;
 	
@@ -58,8 +67,22 @@ public class Game extends Canvas {
 		
 		screen = new Screen(WIDTH, HEIGHT);
 		_input = new Keyboard();
+		_input2 = new Keyboard();
 		
-		_board = new Board(this, _input, screen);
+		//while the other player connect
+		//test
+		Scanner sc = new Scanner(System.in);
+		String name = "",password = "";
+		do{
+			name = sc.next();
+			password = sc.next();
+			System.out.println(name + " " + password);
+		}
+		while(!BombermanGame.client.checkLogin(name, password));
+		
+		System.out.println("howw");
+		
+		_board = new Board(this, _input, _input2, screen, xStartBomberman, yStartBomberman, xStartOpponent, yStartOpponent);
 		addKeyListener(_input);
 	}
 	
@@ -107,6 +130,7 @@ public class Game extends Canvas {
 
 	private void update() {
 		_input.update();
+		_input2.update(input2);
 		_board.update();
 	}
 	

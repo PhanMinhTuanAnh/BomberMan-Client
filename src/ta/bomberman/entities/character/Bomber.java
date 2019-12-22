@@ -155,12 +155,10 @@ public class Bomber extends Character {
 		
 		if(canMove(0, ya)) { 
 			//separate the moves for the player can slide when is colliding
-			System.out.println(_y);
 			_y += ya;
 		}
 		
 		if(canMove(xa, 0)) {
-			System.out.println(_x);
 			_x += xa;
 		}
     }

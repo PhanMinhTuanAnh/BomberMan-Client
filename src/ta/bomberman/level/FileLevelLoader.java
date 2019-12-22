@@ -4,6 +4,7 @@ import ta.bomberman.Board;
 import ta.bomberman.Game;
 import ta.bomberman.entities.LayeredEntity;
 import ta.bomberman.entities.character.Bomber;
+import ta.bomberman.entities.character.Bomber2;
 import ta.bomberman.entities.character.enemy.Balloon;
 import ta.bomberman.entities.character.enemy.Oneal;
 import ta.bomberman.entities.tile.Grass;
@@ -42,7 +43,7 @@ public class FileLevelLoader extends LevelLoader {
 		
 		BufferedReader br = null;
 		try {
-			br = new BufferedReader(new FileReader("D:\\JAvaws\\GameBomberman\\res\\levels\\Level1.txt"));
+			br = new BufferedReader(new FileReader("D:\\JAvaws\\ProjectBomberMan\\res\\levels\\Level3.txt"));
 			String str[] = br.readLine().split(" ");
 			_level = Integer.parseInt(str[0]); 
 			_height = Integer.parseInt(str[1]);
@@ -65,11 +66,14 @@ public class FileLevelLoader extends LevelLoader {
 	
 	
 	@Override
-	public void createEntities() {
+	public void createEntities(int xStartBomberman, int yStartBomberman, int xStartOpponent, int yStartOpponent) {
 		// TODO: tạo các Entity của màn chơi
 		// TODO: sau khi tạo xong, gọi _board.addEntity() để thêm Entity vào game
 
-		
+		_map[yStartBomberman][xStartBomberman] = 'p';
+		if(xStartOpponent != -1 && yStartOpponent != -1)
+			_map[xStartOpponent][yStartOpponent] = 'd';
+
 		for (int i = 0; i < _height; i++) {
 			for (int j = 0; j < _width; j++) {	
 				switch (_map[i][j]) {
@@ -105,6 +109,16 @@ public class FileLevelLoader extends LevelLoader {
                         Screen.setOffset(0, 0);
                         _board.addEntity(xBomber + yBomber * _width, new Grass(xBomber, yBomber, Sprite.grass));
                         break;
+                        
+					case 'd':
+                        // thêm Bomber2
+                        int xBomber2 = j, yBomber2 = i;
+                        Bomber2 bomber2 = new Bomber2(Coordinates.tileToPixel(xBomber2), Coordinates.tileToPixel(yBomber2) + Game.TILES_SIZE, _board);
+                        _board.addCharacter(bomber2);
+                        Screen.setOffset(0, 0);
+                        _board.addEntity(xBomber2 + yBomber2 * _width, new Grass(xBomber2, yBomber2, Sprite.grass));
+                        break;
+                       
 					case '1':
 						// thêm Enemy
 						_board.addCharacter(new Balloon(Coordinates.tileToPixel(j),

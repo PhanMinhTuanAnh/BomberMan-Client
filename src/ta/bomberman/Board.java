@@ -19,12 +19,17 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Quản lý thao tác đi�?u khiển, load level, render các màn hình của game
+ * Quản lý thao tác đi�?u khiển, load level, render các màn hình của game
  */
 public class Board implements IRender {
+	
+	// code thêm
+	public int _xStartBomberman = -1, _yStartBomberman = -1, _xStartOpponent = -1, _yStartOpponent = -1; 
+
 	protected LevelLoader _levelLoader;
 	protected Game _game;
 	protected Keyboard _input;
+	protected Keyboard _input2;
 	protected Screen _screen;
 	
 	public Entity[] _entities;
@@ -40,6 +45,22 @@ public class Board implements IRender {
 	public Board(Game game, Keyboard input, Screen screen) {
 		_game = game;
 		_input = input;
+		_screen = screen;
+		
+		loadLevel(1); //start in level 1
+	}
+	
+	//code thêm
+	public Board(Game game, Keyboard input, Keyboard input2, Screen screen,
+				int xStartBomberman, int yStartBomberman, int xStartOpponent, int yStartOpponent) {
+		_xStartBomberman = xStartBomberman;
+		_yStartBomberman = yStartBomberman;
+		_xStartOpponent = xStartOpponent;
+		_yStartOpponent = yStartOpponent; 
+
+		_game = game;
+		_input = input;
+		_input2 = input2;
 		_screen = screen;
 		
 		loadLevel(1); //start in level 1
@@ -71,8 +92,8 @@ public class Board implements IRender {
 		int y0 = Screen.yOffset >> 4;
 		int y1 = (Screen.yOffset + screen.getHeight()) / Game.TILES_SIZE; //render one tile plus to fix black margins
 		
-		for (int y = y0; y < y1; y++) {
-			for (int x = x0; x < x1; x++) {
+		for (int y = 0; y < _levelLoader.getHeight(); y++) {
+			for (int x = 0; x < _levelLoader.getWidth(); x++) {
 				_entities[x + y * _levelLoader.getWidth()].render(screen);
 			}
 		}
@@ -99,7 +120,7 @@ public class Board implements IRender {
 			_levelLoader = new FileLevelLoader(this, level);
 			_entities = new Entity[_levelLoader.getHeight() * _levelLoader.getWidth()];
 			
-			_levelLoader.createEntities();
+			_levelLoader.createEntities(_xStartBomberman, _yStartBomberman, _xStartOpponent, _yStartOpponent);
 		} catch (LoadLevelException e) {
 			endGame();
 		}
@@ -315,6 +336,10 @@ public class Board implements IRender {
 	public Keyboard getInput() {
 		return _input;
 	}
+	
+		public Keyboard getInput2() {
+			return _input2;
+		}
 
 	public LevelLoader getLevel() {
 		return _levelLoader;
